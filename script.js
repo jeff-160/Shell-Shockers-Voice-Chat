@@ -92,13 +92,11 @@ window.sendMessage = message => {
     }
 }
 
-function init() {
+(() => {
     keyBindings["Help"][2]()
     Array(helpMenu, statusBar).forEach(i => document.body.appendChild(i))
 
     window.addEventListener("keyup", e => {
         keyBindings[Object.keys(keyBindings).filter(i => keyBindings[i][0] == e.key.toLowerCase())[0]]?.[2]()
     })
-}
-
-init()
+})()
