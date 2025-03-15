@@ -29,20 +29,23 @@ def get_driver() -> WebDriver:
 
     return webdriver.Chrome(options=options)
 
+def get_script(file: str) -> str:
+    with open(file, "r") as f:
+        return f.read()
+
 def main():
     driver = get_driver()
 
+    driver.implicitly_wait(5)
     driver.get("https://shellshock.io/")
-
-    with open("script.js", "r") as f:
-        script = f.read()
+    driver.execute_script(get_script("script.js"))
 
     while True:
         message = sst()
 
         if message:
             try:
-                driver.execute_script(script.replace("MESSAGE", message))
+                driver.execute_script(f'window.sendMessage("{message}")')
             
             except Exception as e:
                 print(f"Failed to send message: {e}")
